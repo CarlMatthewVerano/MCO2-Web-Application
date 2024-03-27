@@ -1,6 +1,12 @@
+import express from 'express'
 import dotenv from 'dotenv'
 import mysql from 'mysql2'
+import path from 'path'
 dotenv.config()
+
+const app = express();
+
+app.use(express.static('src'));
 
 const pool = mysql.createPool(
     {
@@ -11,6 +17,21 @@ const pool = mysql.createPool(
         // password: process.env.MYSQL_PASSWORD
     }
 ).promise()
+
+app.set('view engine', 'ejs');
+
+app.set('views', path.join('src'));
+
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+// app.get('/', (req, res) => {
+//     res.render('index');
+// });
+
 
 // HOW TO CHANGE PORTS DYNAMICALLY
 // function refreshPool() {
@@ -93,3 +114,4 @@ const pool = mysql.createPool(
 
 // const tests = await deleter("hanz")
 // console.log(tests)
+app.listen(3000, console.log('Server running on port 3000'));
