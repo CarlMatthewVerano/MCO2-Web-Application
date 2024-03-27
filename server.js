@@ -45,15 +45,18 @@ const pool = mysql.createPool(
 // // gets a single row from the table
 // console.log(tests)
 
-//CREATE
-// INSERT INTO tablename(column1, and so on)
-// VALUES (value1, and so on);
-// export async function insertourmom(param){
-//     const [mothersday] = await pool.query(`
-//     INSERT INTO tablename (column1, and so on)
-//     VALUES (param.value1, and so on)
+//CREATE (working)
+// export async function read(name, value1) {
+//     const [rows] = await pool.query(`
+//     INSERT INTO test_table (name, value)
+//     VALUES ("${name}", "${value1}")
 //     `)
+//     return rows
 // }
+// const tests = await read("Jiwoo", "Kim Jiwoo")
+// console.log(tests)
+
+
 
 //READ (working)
 // export async function read() {
