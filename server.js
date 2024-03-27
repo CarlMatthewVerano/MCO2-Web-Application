@@ -45,27 +45,6 @@ app.get('/', (req, res) => {
 // Call refreshPool() whenever you need to change the port, especially after the first cluster fails.
 
 
-
-// export async function getNames() {
-//     // returns an array of objects
-//     const [rows] = await pool.query("SELECT * FROM test_table")
-//     return rows
-// }
-
-// export async function getName(name) {
-//     // returns an array of objects
-//     const [rows] = await pool.query(`
-//     SELECT *
-//     FROM test_table
-//     WHERE name = "${name}"
-//     `)
-//     return rows
-// }
-
-// const tests = await getNames()
-// // gets a single row from the table
-// console.log(tests)
-
 //CREATE (working)
 // export async function read(name, value1) {
 //     const [rows] = await pool.query(`
