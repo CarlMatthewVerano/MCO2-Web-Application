@@ -48,13 +48,13 @@ const pool = mysql.createPool(
 
 
 //READ (working)
-// export async function read() {
-//     // returns an array of objects
-//     const [rows] = await pool.query("SELECT * FROM test_table")
-//     return rows
-// }
-// const tests = await read()
-// console.log(tests)
+export async function read() {
+    // returns an array of objects
+    const [rows] = await pool.query("SELECT * FROM test_table")
+    return rows
+}
+const tests = await read()
+console.log(tests)
 
 
 //UPDATE (working)

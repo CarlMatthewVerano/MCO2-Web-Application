@@ -1,11 +1,14 @@
 import express from 'express';
+import { read } from './database.js';
 const app = express();
 
 app.set('view engine', 'ejs');
 
 // Default route
-app.get('/', (req, res) => {
-    res.render("index.ejs")
+app.get('/', async (req, res) => {
+    const data = await read();
+    console.log(data);
+    res.render("index.ejs", { data })
 })
 
 app.get('/create', (req, res) => {

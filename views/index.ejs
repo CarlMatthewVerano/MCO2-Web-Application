@@ -34,6 +34,24 @@
   </nav>
 </header>
 <body>
-      put data here
+  <div class="container" style="padding:50px; margin: 15px 15px">
+    Data is here: <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+    <% for(let i = 0; i < data.length; i++) {%>
+        <tr>
+          <td><%= data[i].name%></td>
+          <td><%= data[i].value%></td>
+        </tr>
+    <% } %>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
