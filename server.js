@@ -23,6 +23,8 @@ const pool = mysql.createPool(
 //   }
 // Call refreshPool() whenever you need to change the port, especially after the first cluster fails.
 
+
+
 // export async function getNames() {
 //     // returns an array of objects
 //     const [rows] = await pool.query("SELECT * FROM test_table")
@@ -44,32 +46,24 @@ const pool = mysql.createPool(
 // console.log(tests)
 
 //CREATE
-/*
-INSERT INTO tablename (column1, and so on)
-VALUES (value1, and so on);
-export async function insertourmom(param){
-    const [mother'sday] = await pool.query(`
-    INSERT INTO tablename (column1, and so on)
-    VALUES (param.value1, and so on)
-    `)
-}
-*/
+// INSERT INTO tablename(column1, and so on)
+// VALUES (value1, and so on);
+// export async function insertourmom(param){
+//     const [mothersday] = await pool.query(`
+//     INSERT INTO tablename (column1, and so on)
+//     VALUES (param.value1, and so on)
+//     `)
+// }
 
-//READ
-/*
-SELECT
-FROM
-(whatever, sir oli)``````
-export async function readurmom(param){ ur mum
-    const [mother'sday] = await pool.query(`
-    SELECT  field
-    FROM    table
-    WHERE   condition = "${param}"
-    `)
+//READ (working)
+// export async function read() {
+//     // returns an array of objects
+//     const [rows] = await pool.query("SELECT * FROM test_table")
+//     return rows
+// }
+// const tests = await read()
+// console.log(tests)
 
-    return mother'sday
-}
-*/
 
 //UPDATE (working)
 // export async function updater(param, value1) {
