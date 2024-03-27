@@ -23,11 +23,11 @@ const pool = mysql.createPool(
 //   }
 // Call refreshPool() whenever you need to change the port, especially after the first cluster fails.
 
-export async function getNames() {
-    // returns an array of objects
-    const [rows] = await pool.query("SELECT * FROM test_table")
-    return rows
-}
+// export async function getNames() {
+//     // returns an array of objects
+//     const [rows] = await pool.query("SELECT * FROM test_table")
+//     return rows
+// }
 
 // export async function getName(name) {
 //     // returns an array of objects
@@ -39,9 +39,9 @@ export async function getNames() {
 //     return rows
 // }
 
-const tests = await getNames()
-// gets a single row from the table
-console.log(tests)
+// const tests = await getNames()
+// // gets a single row from the table
+// console.log(tests)
 
 //CREATE
 /*
@@ -71,18 +71,18 @@ export async function readurmom(param){ ur mum
 }
 */
 
-//UPDATE
-/*
-export async function updater(param) {
-    // returns an array of objects
-    const [rows] = await pool.query(`
-    UPDATE test_table
-    SET column1 = value1, column2 = value2, ...
-    WHERE param = "${param}";
-    `)
-    return rows
-}
- */
+//UPDATE (working)
+// export async function updater(param, value1) {
+//     // returns an array of objects
+//     const [rows] = await pool.query(`
+//     UPDATE test_table
+//     SET value = "${value1}"
+//     WHERE name = "${param}";
+//     `)
+//     return rows
+// }
+// const tests = await updater("Tzuyu", "Chou Tzuyu")
+// console.log(tests)
 
 //DELETE
 /*
