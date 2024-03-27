@@ -84,13 +84,15 @@ export async function readurmom(param){ ur mum
 // const tests = await updater("Tzuyu", "Chou Tzuyu")
 // console.log(tests)
 
-//DELETE
-/*
-export async function deleter(param) {
-    // returns an array of objects
-    const [rows] = await pool.query(`
-    DELETE FROM test_table WHERE param = "${param}";
-    `)
-    return rows
-}
- */
+
+//DELETE (working)
+// export async function deleter(param) {
+//     // returns an array of objects
+//     const [rows] = await pool.query(`
+//     DELETE FROM test_table WHERE name = "${param}"
+//     `)
+//     return rows
+// }
+
+// const tests = await deleter("hanz")
+// console.log(tests)
