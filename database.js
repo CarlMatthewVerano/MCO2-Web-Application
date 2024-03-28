@@ -1,6 +1,6 @@
-import dotenv from 'dotenv'
-import express from 'express'
-import mysql from 'mysql2'
+import dotenv from 'dotenv';
+import express from 'express';
+import mysql from 'mysql2';
 dotenv.config()
 
 const app = express();
@@ -16,11 +16,6 @@ const pool = mysql.createPool(
         // password: process.env.MYSQL_PASSWORD
     }
 ).promise()
-
-// app.get('/', (req, res) => {
-//     res.render('index');
-// });
-
 
 // HOW TO CHANGE PORTS DYNAMICALLY
 // function refreshPool() {
