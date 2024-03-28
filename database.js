@@ -48,22 +48,18 @@ export async function read() {
     const [rows] = await pool.query("SELECT * FROM test_table")
     return rows
 }
-const tests = await read()
-console.log(tests)
 
 
 //UPDATE (working)
-// export async function updater(param, value1) {
-//     // returns an array of objects
-//     const [rows] = await pool.query(`
-//     UPDATE test_table
-//     SET value = "${value1}"
-//     WHERE name = "${param}";
-//     `)
-//     return rows
-// }
-// const tests = await updater("Tzuyu", "Chou Tzuyu")
-// console.log(tests)
+export async function updater(param, value1) {
+    // returns an array of objects
+    const [rows] = await pool.query(`
+    UPDATE test_table
+    SET value = "${value1}"
+    WHERE name = "${param}"
+    `)
+    return rows
+}
 
 
 //DELETE (working)
