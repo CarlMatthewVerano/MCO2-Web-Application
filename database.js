@@ -63,13 +63,10 @@ export async function updater(param, value1) {
 
 
 //DELETE (working)
-// export async function deleter(param) {
-//     // returns an array of objects
-//     const [rows] = await pool.query(`
-//     DELETE FROM test_table WHERE name = "${param}"
-//     `)
-//     return rows
-// }
-
-// const tests = await deleter("hanz")
-// console.log(tests)
+export async function deleter(param) {
+    // returns an array of objects
+    const [rows] = await pool.query(`
+    DELETE FROM test_table WHERE name = "${param}"
+    `)
+    return rows
+}

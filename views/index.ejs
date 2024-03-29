@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Document</title>
 </head>
 <header>
@@ -39,6 +40,7 @@
           <th>Name</th>
           <th>Value</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -47,6 +49,10 @@
               <td><%= data[i].name%></td>
               <td><%= data[i].value%></td>
               <td><a class="link-dark" href="/edit/<%= data[i].name %>">Edit</a></td>
+              <form action="/edit/<%=data[i].name %>/delete" method="POST">
+                <input type="hidden" name="name" value="<%=data[i].name %>">
+                <td><button class="fas fa-trash btn" type="submit"></button></td>
+              </form>
             </tr>
         <% } %>
       </tbody>

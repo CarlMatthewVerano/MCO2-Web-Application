@@ -1,5 +1,5 @@
 import express from 'express';
-import { read, updater } from './database.js';
+import { deleter, read, updater } from './database.js';
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -32,11 +32,17 @@ app.get('/edit/:name', async (req, res) => {
     res.render("edit.ejs", {singleData})
 })
 
-app.post('/edit/:name', async (req, res) => {
+app.post('/edit/:name/update', async (req, res) => {
     const name = req.body.name
     const value = req.body.value
-    console.log(name, value)
     await updater(name, value)
+    res.redirect('/')
+})
+
+app.post('/edit/:name/delete', async (req, res) => {
+    const name = req.body.name
+    console.log(name)
+    await deleter(name)
     res.redirect('/')
 })
 
