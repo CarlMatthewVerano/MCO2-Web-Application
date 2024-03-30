@@ -21,25 +21,24 @@
             <li class="nav-item">
               <a class="nav-link" href="/create">Create</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/edit">Edit</a>
-            </li>
           </ul>
         </div>
       </div>
     </nav>
   </header>
 <body>
+  <form action="/create" method="POST">
     <div class="container" style="padding:50px; margin: 15px 15px">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Name</label>
-          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name" name="name">
         </div>
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">Value</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="value" name="value">
         </div>
-        <button type="button" class="btn btn-outline-primary">Confirm</button>
+        <button type="submit" class="btn btn-outline-primary">Confirm</button>
       </div>
+    </form>
 </body>
 </html>

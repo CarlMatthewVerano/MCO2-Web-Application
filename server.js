@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleter, read, updater } from './database.js';
+import { creator, deleter, read, updater } from './database.js';
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -19,12 +19,14 @@ app.get('/create', (req, res) => {
     res.render("create.ejs")
 })
 
-// // Edit route
-// app.get('/edit', (req, res) => {
-//     res.render("edit.ejs")
-// })
+app.post('/create', async (req, res) => {
+    const name = req.body.name
+    const value = req.body.value
+    console.log(name, value)
+    await creator(name, value)
+    res.redirect('/')
+})
 
-// Single Edit route
 app.get('/edit/:name', async (req, res) => {
     const name = req.params.name
     const data = await read();

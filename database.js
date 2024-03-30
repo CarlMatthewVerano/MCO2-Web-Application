@@ -30,17 +30,13 @@ const pool = mysql.createPool(
 
 
 //CREATE (working)
-// export async function read(name, value1) {
-//     const [rows] = await pool.query(`
-//     INSERT INTO test_table (name, value)
-//     VALUES ("${name}", "${value1}")
-//     `)
-//     return rows
-// }
-// const tests = await read("Jiwoo", "Kim Jiwoo")
-// console.log(tests)
-
-
+export async function creator(name, value1) {
+    const [rows] = await pool.query(`
+    INSERT INTO test_table (name, value)
+    VALUES ("${name}", "${value1}")
+    `)
+    return rows
+}
 
 //READ (working)
 export async function read() {
@@ -48,7 +44,6 @@ export async function read() {
     const [rows] = await pool.query("SELECT * FROM test_table")
     return rows
 }
-
 
 //UPDATE (working)
 export async function updater(param, value1) {
@@ -60,7 +55,6 @@ export async function updater(param, value1) {
     `)
     return rows
 }
-
 
 //DELETE (working)
 export async function deleter(param) {
