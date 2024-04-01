@@ -39,10 +39,17 @@ export async function creator(name, value1) {
 }
 
 //READ (working)
-export async function read() {
+export async function read(searchTerm) {
+    let sql = "SELECT * FROM test_table";
+    let params = [];
+
+    if (searchTerm) {
+        sql += " WHERE name LIKE ?";
+        params.push(searchTerm);
+    }
     // returns an array of objects
-    const [rows] = await pool.query("SELECT * FROM test_table")
-    return rows
+    const [rows] = await pool.query(sql, params)
+    return rows;
 }
 
 //UPDATE (working)

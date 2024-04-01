@@ -9,7 +9,8 @@ app.use(express.json())
 
 // Default route
 app.get('/', async (req, res) => {
-    const data = await read();
+    const searchTerm = req.query.searchTerm;
+    const data = await read(searchTerm);
     console.log(data);
     res.render("index.ejs", { data })
 })
