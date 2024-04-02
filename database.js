@@ -47,6 +47,7 @@ export async function read(searchTerm) {
         sql += " WHERE name LIKE ?";
         params.push(searchTerm);
     }
+    sql += " ORDER BY name";
     // returns an array of objects
     const [rows] = await pool.query(sql, params)
     return rows;
