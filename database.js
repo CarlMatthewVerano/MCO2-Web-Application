@@ -18,15 +18,26 @@ const pool = mysql.createPool(
 ).promise()
 
 // HOW TO CHANGE PORTS DYNAMICALLY
-// function refreshPool() {
-//     pool = mysql.createPool({
-//       host: process.env.MYSQL_HOST,
-//       user: process.env.MYSQL_USER,
-//       database: process.env.MYSQL_DATABASE,
-//       port: process.env.MYSQL_PORT
-//     });
+// async function executeQuery(query) {
+//     try {
+//       const [rows, fields] = await pool.query(query);
+//       return rows;
+//     } catch (err) {
+//       console.error('Error executing query', err);
+//       if (err.code === 'ETIMEDOUT') {
+//         if (firstFailure) {
+//           process.env.MYSQL_PORT = '20199';
+//           firstFailure = false;
+//         }
+//         refreshPool();
+//         // Retry the query
+//         return executeQuery(query);
+//       } else {
+//         // Handle other errors as necessary
+//         throw err;
+//       }
+//     }
 //   }
-// Call refreshPool() whenever you need to change the port, especially after the first cluster fails.
 
 
 //CREATE (working)
