@@ -33,11 +33,11 @@ function refreshPool() {
 }
 
 //CREATE (working)
-export async function creator(name, value1) {
+export async function creator(px_id, status) {
     try{
         const [rows] = await pool.query(`
-        INSERT INTO test_table (name, value)
-        VALUES ("${name}", "${value1}")
+        INSERT INTO appointments (px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
+        VALUES ("${px_id}", "clinic_val", "doctor_val", "appt_val", "${status}", "time_val", "date_val", "start_val", "end_val", "type_val", "virtual_val")
         `)
         return rows
     } catch (err) {
@@ -57,14 +57,14 @@ export async function creator(name, value1) {
 //READ (working)
 export async function read(searchTerm) {
     try{
-        let sql = "SELECT * FROM test_table";
+        let sql = "SELECT * FROM appointments";
         let params = [];
 
         if (searchTerm) {
-            sql += " WHERE name LIKE ?";
+            sql += " WHERE px_id LIKE ?";
             params.push(searchTerm);
         }
-        sql += " ORDER BY name";
+        sql += " ORDER BY px_id";
         // returns an array of objects
         const [rows] = await pool.query(sql, params)
         return rows;
@@ -83,13 +83,13 @@ export async function read(searchTerm) {
 }
 
 //UPDATE (working)
-export async function updater(param, value1) {
+export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status) {
     try{
         // returns an array of objects
         const [rows] = await pool.query(`
-        UPDATE test_table
-        SET value = "${value1}"
-        WHERE name = "${param}"
+        UPDATE appointments
+        SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_id = "${appt_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}"
+        WHERE px_id = "${px_id}"
         `)
         return rows
     } catch (err) {
@@ -107,11 +107,11 @@ export async function updater(param, value1) {
 }
 
 //DELETE (working)
-export async function deleter(param) {
+export async function deleter(px_id) {
     try{
         // returns an array of objects
         const [rows] = await pool.query(`
-        DELETE FROM test_table WHERE name = "${param}"
+        DELETE FROM appointments WHERE px_id = "${px_id}"
         `)
         return rows
     } catch (err) {
@@ -120,7 +120,7 @@ export async function deleter(param) {
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return deleter(param);
+            return deleter(px_id);
         } else {
             // Handle other errors as necessary
             throw err;
