@@ -36,8 +36,8 @@ function refreshPool() {
 export async function creator(px_id, status) {
     try{
         const [rows] = await pool.query(`
-        INSERT INTO appointments (px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
-        VALUES ("${px_id}", "clinic_val", "doctor_val", "appt_val", "${status}", "time_val", "date_val", "start_val", "end_val", "type_val", "virtual_val")
+        INSERT INTO appointments (px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
+        VALUES ("${px_id}", "clinic_val", "doctor_val", "appt_val", "${status}", "time_val", "date_val", "start_val", "end_val", "type_val", "virtual_val", 0)
         `)
         return rows
     } catch (err) {
@@ -83,14 +83,17 @@ export async function read(searchTerm) {
 }
 
 //UPDATE (working)
-export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status) {
+export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version) {
     try{
         // returns an array of objects
         const [rows] = await pool.query(`
         UPDATE appointments
-        SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_id = "${appt_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}"
-        WHERE px_id = "${px_id}"
+        SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_id = "${appt_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}", version = version + 1
+        WHERE px_id = "${px_id}" AND version = ${version}
         `)
+        if (rows.affectedRows === 0) {
+            throw new Error('Conflict occurred. Please retry the operation.');
+        }
         return rows
     } catch (err) {
         console.error('Error executing query', err);
@@ -98,7 +101,7 @@ export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status,
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return updater(param, value1);
+            return updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version);
         } else {
             // Handle other errors as necessary
             throw err;

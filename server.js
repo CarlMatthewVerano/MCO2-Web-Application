@@ -30,6 +30,11 @@ app.get('/edit/:px_id', async (req, res) => {
     const px_id = req.params.px_id
     const data = await read();
     const singleData = data.find((item) => item.px_id == px_id)
+
+    if (req.query.error) {
+        singleData.error = req.query.error;
+    }
+
     res.render("edit.ejs", {singleData})
 })
 
@@ -45,9 +50,24 @@ app.post('/edit/:px_id/update', async (req, res) => {
     const end_time = req.body.end_time
     const appt_type = req.body.appt_type
     const virtual_status = req.body.virtual_status
+    const version = req.body.version
     console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
-    await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
-    res.redirect('/')
+
+    // handle the optimistic locking error
+    try {
+        await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
+        res.redirect('/')
+    } catch (err) {
+        if (err.message === 'Conflict occurred. Please retry the operation.') {
+            // Optimistic locking error occurred
+            // Redirect the user back to the edit page with an error message
+            res.render('/edit/${px_id}', { error: 'Another user has updated this record. Please review their changes and try again.'});
+        } else {
+            // Some other error occurred
+            console.error(err);
+            res.status(500).send('An error occurred while processing your request.');
+        }
+    }
 })
 
 app.post('/edit/:px_id/delete', async (req, res) => {
