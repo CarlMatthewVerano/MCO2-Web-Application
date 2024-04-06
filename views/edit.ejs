@@ -31,6 +31,14 @@
   </nav>
 </header>
 <body>
+
+  <!-- error message here -->
+  <% if (singleData.error) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= singleData.error %>
+    </div>
+  <% } %>
+
   <form action="/edit/<%=singleData.px_id %>/update" method="POST">
     <div class="form-group">
       <label for="2">Clinic ID</label>
@@ -72,6 +80,9 @@
       <label for="11">Virtual Status</label>
       <input type="text" class="form-control" id="11" placeholder="Enter Virtual Status" name="virtual_status" value="<%=singleData.virtual_status %>">
     </div>
+
+    <!-- Hidden input field for 'version' -->
+    <input type="hidden" name="version" value="<%=singleData.version %>">
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </body>
