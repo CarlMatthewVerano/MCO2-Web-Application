@@ -61,7 +61,7 @@ app.post('/edit/:px_id/update', async (req, res) => {
         if (err.message === 'Conflict occurred. Please retry the operation.') {
             // Optimistic locking error occurred
             // Redirect the user back to the edit page with an error message
-            res.render('/edit/${px_id}', { error: 'Another user has updated this record. Please review their changes and try again.'});
+            res.redirect(`/edit/${px_id}?error=Another user has updated this record. Please review their changes and try again.`);
         } else {
             // Some other error occurred
             console.error(err);
