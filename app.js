@@ -5,6 +5,8 @@ import expressLayouts from 'express-ejs-layouts';
 import path from 'path'
 import errorHandler from 'errorhandler'
 import favicon from 'serve-favicon'
+import dotenv from 'dotenv'
+dotenv.config()
 
 // alternative to __dirname
 import { fileURLToPath } from 'url';
@@ -17,6 +19,9 @@ import LOG from './utils/logger.js'
 
 // create express app
 const app = express();
+
+// configure app.settings.............................
+app.set('host', process.env.HOST || 'localhost')
 
 // set the root view folder
 app.set('views', path.join(__dirname, 'views'))
@@ -36,7 +41,8 @@ app.use((req, res, next) => {
 })
 
 import routes from'./routes/index.js';
-app.use('/', routes)
+app.use('/', routes)    // load routing to handle all requests
+LOG.info('Loaded routing.')
 
 // app.use((req, res) => { res.status(404).render('error.ejs', {status: 404, message: 'NOT FOUND', layout: 'layout.ejs'}) }) // handle page not found errors
 
@@ -46,9 +52,11 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 app.use(errorHandler())
 
+// call app.listen to start server
+const host = app.get('host')
 const port = 3000
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`\nApp running at http://${host}:${port}`)
 })
 
 export default app;
