@@ -1,18 +1,24 @@
 import express from 'express';
 const api = express.Router()
 export default api;
-import { creator, deleter, read, updater } from './database.js';
+import { creator, deleter, read, updater } from '../database/database.js';
 
-// Default route
+// Manage top-level request first
 api.get('/', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const data = await read(searchTerm);
-    res.render("index.ejs", { data })
+    res.render("index", { data })
+})
+
+api.get('/index', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const data = await read(searchTerm);
+    res.render("index", { data })
 })
 
 // Create route
 api.get('/create', (req, res) => {
-    res.render("create.ejs")
+    res.render("appointment/create.ejs")
 })
 
 api.post('/create', async (req, res) => {
@@ -31,7 +37,7 @@ api.get('/edit/:px_id', async (req, res) => {
         singleData.error = req.query.error;
     }
 
-    res.render("edit.ejs", {singleData})
+    res.render("appointment/edit.ejs", {singleData})
 })
 
 api.post('/edit/:px_id/update', async (req, res) => {

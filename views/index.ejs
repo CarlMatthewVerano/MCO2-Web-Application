@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('./partials/head'); %>
-</head>
-<header>
-  <%- include('./partials/header'); %>
-</header>
-<body>
-  <div class="container" style="padding:50px; margin: 15px 15px">
-    Data is here: <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Value</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for(let i = 0; i < data.length; i++) {%>
-            <tr>
-              <td><%= data[i].px_id%></td>
-              <td><%= data[i].appt_status%></td>
-              <td><a class="link-dark" href="/edit/<%= data[i].px_id %>">Edit</a></td>
-              <form action="/edit/<%=data[i].px_id %>/delete" method="POST">
-                <input type="hidden" name="px_id" value="<%=data[i].px_id %>">
-                <td><button class="fas fa-trash btn" type="submit"></button></td>
-              </form>
-            </tr>
-        <% } %>
-      </tbody>
-    </table>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <title>SeriousMD</title>
+  </head>
+  <body>
+    <%- include('header'); %>
+    <div class="container" style="padding: 50px; margin: 15px 15px">
+      Data is here: <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i = 0; i < data.length; i++) {%>
+          <tr>
+            <td><%= data[i].px_id%></td>
+            <td><%= data[i].appt_status%></td>
+            <td>
+              <a class="link-dark" href="/edit/<%= data[i].px_id %>">Edit</a>
+            </td>
+            <form action="/edit/<%=data[i].px_id %>/delete" method="POST">
+              <input type="hidden" name="px_id" value="<%=data[i].px_id %>" />
+              <td><button class="fas fa-trash btn" type="submit"></button></td>
+            </form>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>

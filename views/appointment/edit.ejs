@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <%- include('../header'); %>
+
+    <main>
+      <!-- error message here -->
+      <% if (singleData.error) { %>
+      <div class="alert alert-danger" role="alert"><%= singleData.error %></div>
+      <% } %>
+
+      <form action="/edit/<%=singleData.px_id %>/update" method="POST">
+        <div class="form-group">
+          <label for="2">Clinic ID</label>
+          <input
+            type="text"
+            class="form-control"
+            id="2"
+            placeholder="Enter Clinic ID"
+            name="clinic_id"
+            value="<%=singleData.clinic_id %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="3">Doctor ID</label>
+          <input
+            type="text"
+            class="form-control"
+            id="3"
+            placeholder="Enter Doctor ID"
+            name="doctor_id"
+            value="<%=singleData.doctor_id %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="4">Appointment ID</label>
+          <input
+            type="text"
+            class="form-control"
+            id="4"
+            placeholder="Enter Appointment ID"
+            name="appt_id"
+            value="<%=singleData.appt_id %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="5">Appointment Status</label>
+          <input
+            type="text"
+            class="form-control"
+            id="5"
+            placeholder="Enter Appointment Status"
+            name="appt_status"
+            value="<%=singleData.appt_status %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="6">Time Queued</label>
+          <input
+            type="text"
+            class="form-control"
+            id="6"
+            placeholder="Enter Time Queued"
+            name="time_queued"
+            value="<%=singleData.time_queued %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="7">Queue Date</label>
+          <input
+            type="text"
+            class="form-control"
+            id="7"
+            placeholder="Enter Queue Date"
+            name="queue_date"
+            value="<%=singleData.queue_date %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="8">Start Time</label>
+          <input
+            type="text"
+            class="form-control"
+            id="8"
+            placeholder="Enter Start Time"
+            name="start_time"
+            value="<%=singleData.start_time %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="9">End Time</label>
+          <input
+            type="text"
+            class="form-control"
+            id="9"
+            placeholder="Enter End Time"
+            name="end_time"
+            value="<%=singleData.end_time %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="10">Appointment Type</label>
+          <input
+            type="text"
+            class="form-control"
+            id="10"
+            placeholder="Enter Appointment Type"
+            name="appt_type"
+            value="<%=singleData.appt_type %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="11">Virtual Status</label>
+          <input
+            type="text"
+            class="form-control"
+            id="11"
+            placeholder="Enter Virtual Status"
+            name="virtual_status"
+            value="<%=singleData.virtual_status %>"
+          />
+        </div>
+
+        <!-- Hidden input field for 'version' -->
+        <input type="hidden" name="version" value="<%=singleData.version %>" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </main>
+  </body>
+</html>
