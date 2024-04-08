@@ -50,22 +50,24 @@ api.post('/create', async (req, res) => {
 })
 
 api.post('/edit/:px_id/update', async (req, res) => {
-    const px_id = req.params.px_id
-    const clinic_id = req.body.clinic_id
-    const doctor_id = req.body.doctor_id
-    const appt_id = req.body.appt_id
-    const appt_status = req.body.appt_status
-    const time_queued = req.body.time_queued
-    const queue_date = req.body.queue_date
-    const start_time = req.body.start_time
-    const end_time = req.body.end_time
-    const appt_type = req.body.appt_type
-    const virtual_status = req.body.virtual_status
-    const version = req.body.version
-    console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
-
+    
     // handle the optimistic locking error
     try {
+        const px_id = req.params.px_id
+        const clinic_id = req.body.clinic_id
+        const doctor_id = req.body.doctor_id
+        const appt_id = req.body.appt_id
+        const appt_status = req.body.appt_status
+        const time_queued = req.body.time_queued
+        const queue_date = req.body.queue_date
+        const start_time = req.body.start_time
+        const end_time = req.body.end_time
+        const appt_type = req.body.appt_type
+        const virtual_status = req.body.virtual_status
+        const version = req.body.version
+        console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
+
+
         await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
         res.redirect('/')
     } catch (err) {
@@ -82,7 +84,7 @@ api.post('/edit/:px_id/update', async (req, res) => {
 })
 
 api.post('/edit/:px_id/delete', async (req, res) => {
-    const px_id = req.body.px_id
+    const px_id = req.params.px_id
     console.log(px_id)
     await deleter(px_id)
     res.redirect('/')

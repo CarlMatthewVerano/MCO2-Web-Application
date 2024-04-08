@@ -5,6 +5,7 @@ import expressLayouts from 'express-ejs-layouts';
 import path from 'path'
 import errorHandler from 'errorhandler'
 import favicon from 'serve-favicon'
+import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -26,10 +27,16 @@ app.set('host', process.env.HOST || 'localhost')
 // set the root view folder
 app.set('views', path.join(__dirname, 'views'))
 
+// this needs to be here for some reason
+
 // specify original view engine (EJS)
 app.set('view engine', 'ejs');
 app.set('layout', 'layout.ejs')
 app.use(expressLayouts)
+
+// parse before routing
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // configure middleware.....................................................
 app.use(favicon(path.join(__dirname, '/public/images/favicon.ico')))
@@ -47,8 +54,6 @@ LOG.info('Loaded routing.')
 // app.use((req, res) => { res.status(404).render('error.ejs', {status: 404, message: 'NOT FOUND', layout: 'layout.ejs'}) }) // handle page not found errors
 
 // specify various resources and apply them to our application
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 app.use(errorHandler())
 
