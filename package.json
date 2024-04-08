@@ -20,7 +20,8 @@
     "express-ejs-layouts": "^2.5.1",
     "mysql2": "^3.9.1",
     "path": "^0.12.7",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",

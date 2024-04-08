@@ -12,20 +12,28 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// utils
+import LOG from './utils/logger.js'
+
 // create express app
 const app = express();
 
 // set the root view folder
 app.set('views', path.join(__dirname, 'views'))
 
-// configure middleware.....................................................
-app.use(favicon(path.join(__dirname, '/public/images/favicon.ico')))
-
 // specify original view engine (EJS)
 app.set('view engine', 'ejs');
 app.set('layout', 'layout.ejs')
 app.use(expressLayouts)
 
+// configure middleware.....................................................
+app.use(favicon(path.join(__dirname, '/public/images/favicon.ico')))
+
+// log every call and pass it on for handling
+app.use((req, res, next) => {
+  LOG.debug(`${req.method} ${req.url}`)
+  next()
+})
 
 import routes from'./routes/index.js';
 app.use('/', routes)
