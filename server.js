@@ -1,12 +1,15 @@
 
 // Module dependencies
 import express from 'express';
+import expressLayouts from 'express-ejs-layouts';
 
 // create express app
 const app = express();
 
 // specify original view engine (EJS)
 app.set('view engine', 'ejs');
+app.set('layout', 'layout.ejs')
+app.use(expressLayouts)
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

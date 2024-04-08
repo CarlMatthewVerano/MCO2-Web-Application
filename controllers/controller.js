@@ -3,41 +3,50 @@ const api = express.Router()
 export default api;
 import { creator, deleter, read, updater } from '../database/database.js';
 
+/* -----=-------- 
+     get routes
+   -------------- */
 // Manage top-level request first
 api.get('/', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const data = await read(searchTerm);
-    res.render("index", { data })
+    res.render("index", { data, layout: 'layout.ejs' })
 })
 
 api.get('/index', async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const data = await read(searchTerm);
-    res.render("index", { data })
+    res.render("index", { data, layout: 'layout.ejs' })
 })
 
 // Create route
 api.get('/create', (req, res) => {
-    res.render("appointment/create.ejs")
+    res.render("appointment/create.ejs", { layout: 'layout.ejs' })
 })
+
+api.get('/edit/:px_id', async (req, res) => {
+    const px_id = req.params.px_id
+    const data = await read();
+    const singleData = await data.find((item) => item.px_id == px_id)
+
+    // console.log(singleData)
+
+    if (req.query.error) {
+        singleData.error = req.query.error;
+    }
+
+    res.render("appointment/edit.ejs", {singleData, layout: 'layout.ejs'})
+})
+
+/* ----------- */
+/* post routes */
+/* ----------- */
 
 api.post('/create', async (req, res) => {
     const px_id = req.body.px_id
     const appt_status = req.body.appt_status
     await creator(px_id, appt_status)
     res.redirect('/')
-})
-
-api.get('/edit/:px_id', async (req, res) => {
-    const px_id = req.params.px_id
-    const data = await read();
-    const singleData = data.find((item) => item.px_id == px_id)
-
-    if (req.query.error) {
-        singleData.error = req.query.error;
-    }
-
-    res.render("appointment/edit.ejs", {singleData})
 })
 
 api.post('/edit/:px_id/update', async (req, res) => {
