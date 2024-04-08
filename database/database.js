@@ -85,16 +85,28 @@ export async function read(searchTerm) {
 //UPDATE (working)
 export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version) {
     try{
-        // returns an array of objects
+        // Check if the record exists
+        const [existingRows] = await pool.query(`
+        SELECT * FROM appointments WHERE px_id = "${px_id}" AND version = ${version}
+        `);
+
+        // If the record doesn't exist, return an error or a message
+        if (existingRows.length === 0) {
+            return { message: 'Record not found', status: 404}
+        }
+
+        // If the record exists, update it
         const [rows] = await pool.query(`
         UPDATE appointments
         SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_id = "${appt_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}", version = version + 1
         WHERE px_id = "${px_id}" AND version = ${version}
-        `)
+        `);
+
         if (rows.affectedRows === 0) {
             throw new Error('Conflict occurred. Please retry the operation.');
         }
-        return rows
+
+        return {message: 'Record updated', status: 200}
     } catch (err) {
         console.error('Error executing query', err);
         if (err.code === 'ETIMEDOUT') {
@@ -112,11 +124,22 @@ export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status,
 //DELETE (working)
 export async function deleter(px_id) {
     try{
-        // returns an array of objects
-        const [rows] = await pool.query(`
+        // Check if the record exists
+        const [existingRows] = await pool.query(`
+        SELECT * FROM appointments WHERE px_id = "${px_id}"
+        `);
+
+        // If the record doesn't exist, return an error or a message
+        if (existingRows.length === 0) {
+            return { message: 'Record not found', status: 404};
+        }
+
+        // If the record exists, delete it
+        await pool.query(`
         DELETE FROM appointments WHERE px_id = "${px_id}"
-        `)
-        return rows
+        `);
+
+        return {message: 'Record deleted', status: 200}
     } catch (err) {
         console.error('Error executing query', err);
         if (err.code === 'ETIMEDOUT') {

@@ -29,13 +29,20 @@ api.get('/edit/:px_id', async (req, res) => {
     const data = await read();
     const singleData = await data.find((item) => item.px_id == px_id)
 
-    // console.log(singleData)
-
     if (req.query.error) {
         singleData.error = req.query.error;
     }
+    
+    // console.log(singleData)
+    if (singleData === undefined) {
+            res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
+    } else {
+        // Handle successful update
+        // For example, you might redirect to a success page
+        res.render("appointment/edit.ejs", {singleData, layout: 'layout.ejs'})
+    }
 
-    res.render("appointment/edit.ejs", {singleData, layout: 'layout.ejs'})
+
 })
 
 /* ----------- */
@@ -68,8 +75,15 @@ api.post('/edit/:px_id/update', async (req, res) => {
         console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
 
 
-        await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
-        res.redirect('/')
+        const response = await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
+        
+        if (response.status === 404) {
+            res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
+        } else {
+            // Handle successful update
+            // For example, you might redirect to a success page
+            res.redirect('/');
+        }
     } catch (err) {
         if (err.message === 'Conflict occurred. Please retry the operation.') {
             // Optimistic locking error occurred
@@ -86,6 +100,13 @@ api.post('/edit/:px_id/update', async (req, res) => {
 api.post('/edit/:px_id/delete', async (req, res) => {
     const px_id = req.params.px_id
     console.log(px_id)
-    await deleter(px_id)
-    res.redirect('/')
+    const response = await deleter(px_id)
+
+    if (response.status === 404) {
+        res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
+    } else {
+        // Handle successful update
+        // For example, you might redirect to a success page
+        res.redirect('/');
+    }
 })
