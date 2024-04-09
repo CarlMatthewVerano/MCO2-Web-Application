@@ -46,7 +46,7 @@ export async function creator(px_id, status) {
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return creator(name, value1);
+            return creator(px_id, status);
         } else {
             // Handle other errors as necessary
             throw err;
