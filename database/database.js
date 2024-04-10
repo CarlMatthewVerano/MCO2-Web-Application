@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mysql from 'mysql2';
-import LOG from '../utils/logger.js'
+import LOG from '../utils/logger.js';
 dotenv.config()
 
 const app = express();
@@ -60,12 +60,15 @@ export function changePool(port) {
                     
                     currentPortIndex = ports.indexOf(port);
                 })
-                .catch(err => {
-                    console.error('Error changing pool', err);
-                    reject(err);
-                });
+                .catch (err => {
+                    if (err.code === 'ETIMEDOUT') {
+                        console.log("Retrying query")
+                        refreshPool();
+                        currentPortIndex -= 1;
+                    }
+                })
         } catch (err) {
-            console.error('Error changing pool', err);
+            console.error('Error changing pool2', err);
             reject(err);
         }
     });
