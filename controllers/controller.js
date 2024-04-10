@@ -2,7 +2,7 @@ import express from 'express';
 const api = express.Router()
 
 // other imports
-import { creator, deleter, read, updater, changePool } from '../database/database.js';
+import { creator, deleter, read, readPagination, updater, changePool } from '../database/database.js';
 import LOG from '../utils/logger.js'
 
 /* -----=-------- 
@@ -14,7 +14,7 @@ api.get('/', async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // default to page 1 if not provided
     const limit = parseInt(req.query.limit, 10) || 20; // default to 20 items per page if not provided
 
-    const response = await read(searchTerm, limit, page);
+    const response = await readPagination(searchTerm, limit, page);
 
     const totalItems = response.total;
     const totalPages = Math.ceil(totalItems / limit);
@@ -33,6 +33,7 @@ api.get('/create', (req, res) => {
 
 api.get('/edit/:appt_id', async (req, res) => {
     const appt_id = req.params.appt_id
+
     const data = await read();
     const singleData = await data.find((item) => item.appt_id == appt_id)
     

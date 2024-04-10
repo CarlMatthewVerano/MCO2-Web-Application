@@ -94,7 +94,7 @@ export async function creator(appt_id, status) {
 }
 
 //READ (working)
-export async function read(searchTerm, limit = 20, page = 1) {
+export async function readPagination(searchTerm, limit = 20, page = 1) {
     try{
         let sql = "SELECT * FROM appointments";
         let countSql = "SELECT COUNT(*) as total FROM appointments";
@@ -124,7 +124,34 @@ export async function read(searchTerm, limit = 20, page = 1) {
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return read(searchTerm, limit, page);
+            return readPagination(searchTerm, limit, page);
+        } else {
+            // Handle other errors as necessary
+            throw err;
+        }
+    }
+}
+
+export async function read(searchTerm) {
+    try{
+        let sql = "SELECT * FROM appointments";
+        let params = [];
+
+        if (searchTerm) {
+            sql += " WHERE appt_id LIKE ?";
+            params.push(searchTerm);
+        }
+        sql += " ORDER BY appt_id";
+        // returns an array of objects
+        const [rows] = await pool.query(sql, params)
+        return rows;
+    } catch (err) {
+        console.error('Error executing query', err);
+        if (err.code === 'ETIMEDOUT') {
+            console.log("Retrying query")
+            refreshPool();
+            // Retry the function
+            return read(searchTerm);
         } else {
             // Handle other errors as necessary
             throw err;
