@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mysql from 'mysql2';
+import LOG from '../utils/logger.js'
 dotenv.config()
 
 const app = express();
@@ -30,6 +31,44 @@ function refreshPool() {
             port: ports[currentPortIndex],
         }
     ).promise();
+}
+
+// function to manually change connection pool
+export function changePool(port) {
+    return new Promise((resolve, reject) => {
+        // Check if the port is valid
+        try {
+            if (!ports.includes(port)) {
+                throw new Error('Invalid port');
+            }
+        
+            pool = mysql.createPool(
+                {
+                    host: process.env.MYSQL_HOST,
+                    database: process.env.MYSQL_DATABASE,
+                    user: process.env.MYSQL_USER,
+                    port: port,
+                }
+            ).promise();
+
+            // Test the connection
+            pool.query('SELECT 1')
+                .then(() => {
+                    resolve()
+                    // log change from prev port to new port
+                    LOG.info('Changed pool from port ' + ports[currentPortIndex] + ' to port ' + port)
+                    
+                    currentPortIndex = ports.indexOf(port);
+                })
+                .catch(err => {
+                    console.error('Error changing pool', err);
+                    reject(err);
+                });
+        } catch (err) {
+            console.error('Error changing pool', err);
+            reject(err);
+        }
+    });
 }
 
 //CREATE (working)

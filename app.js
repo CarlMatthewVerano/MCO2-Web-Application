@@ -27,19 +27,23 @@ app.set('host', process.env.HOST || 'localhost')
 // set the root view folder
 app.set('views', path.join(__dirname, 'views'))
 
-// this needs to be here for some reason
+// configure middleware.....................................................
+app.use(favicon(path.join(__dirname, '/public/images/favicon.ico')))
 
 // specify original view engine (EJS)
 app.set('view engine', 'ejs');
 app.set('layout', 'layout.ejs')
 app.use(expressLayouts)
 
+
 // parse before routing
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// configure middleware.....................................................
-app.use(favicon(path.join(__dirname, '/public/images/favicon.ico')))
+// specify various resources and apply them to our application
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
+app.use(errorHandler())
+
 
 // log every call and pass it on for handling
 app.use((req, res, next) => {
@@ -53,9 +57,6 @@ LOG.info('Loaded routing.')
 
 app.use((req, res) => { res.status(404).render('error.ejs', {status: 404, message: 'NOT FOUND', layout: 'layout.ejs'}) }) // handle page not found errors
 
-// specify various resources and apply them to our application
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
-app.use(errorHandler())
 
 // call app.listen to start server
 const host = app.get('host')

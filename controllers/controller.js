@@ -1,11 +1,13 @@
 import express from 'express';
 const api = express.Router()
-export default api;
-import { creator, deleter, read, updater } from '../database/database.js';
+
+// other imports
+import { creator, deleter, read, updater, changePool } from '../database/database.js';
+import LOG from '../utils/logger.js'
 
 /* -----=-------- 
-     get routes
-   -------------- */
+get routes
+-------------- */
 // Manage top-level request first
 api.get('/', async (req, res) => {
     const searchTerm = req.query.searchTerm;
@@ -28,21 +30,19 @@ api.get('/edit/:px_id', async (req, res) => {
     const px_id = req.params.px_id
     const data = await read();
     const singleData = await data.find((item) => item.px_id == px_id)
-
+    
     if (req.query.error) {
         singleData.error = req.query.error;
     }
     
     // console.log(singleData)
     if (singleData === undefined) {
-            res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
+        res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
     } else {
         // Handle successful update
         // For example, you might redirect to a success page
         res.render("appointment/edit.ejs", {singleData, layout: 'layout.ejs'})
     }
-
-
 })
 
 /* ----------- */
@@ -101,7 +101,7 @@ api.post('/edit/:px_id/delete', async (req, res) => {
     const px_id = req.params.px_id
     console.log(px_id)
     const response = await deleter(px_id)
-
+    
     if (response.status === 404) {
         res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
     } else {
@@ -110,3 +110,19 @@ api.post('/edit/:px_id/delete', async (req, res) => {
         res.redirect('/');
     }
 })
+
+api.post('/changePool', async (req, res) => {
+    const newPort = req.body.newPort; // Assuming the new port is sent in the request body
+
+    console.log(newPort)
+        
+    try {
+        await changePool(newPort)
+        res.status(200).send('Pool changed successfully.');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('An error occurred while changing the pool.');
+    }
+});
+
+export default api;
