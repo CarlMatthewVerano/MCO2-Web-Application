@@ -51,7 +51,7 @@ import routes from'./routes/index.js';
 app.use('/', routes)    // load routing to handle all requests
 LOG.info('Loaded routing.')
 
-// app.use((req, res) => { res.status(404).render('error.ejs', {status: 404, message: 'NOT FOUND', layout: 'layout.ejs'}) }) // handle page not found errors
+app.use((req, res) => { res.status(404).render('error.ejs', {status: 404, message: 'NOT FOUND', layout: 'layout.ejs'}) }) // handle page not found errors
 
 // specify various resources and apply them to our application
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
