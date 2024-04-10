@@ -1,122 +1,101 @@
 <!-- error message here -->
 <!-- error message here -->
 <% if (singleData.error) { %>
-  <div class="alert alert-danger" role="alert"><%= singleData.error %></div>
-<% } %>
+  <div class="alert alert-danger" role="alert">
+    <%= singleData.error %>
+  </div>
+  <% } %>
 
-<form action="/edit/<%=singleData.px_id %>/update" method="POST">
-  <div class="form-group">
-    <label for="2">Clinic ID</label>
-    <input
-      type="text"
-      class="form-control"
-      id="2"
-      placeholder="Enter Clinic ID"
-      name="clinic_id"
-      value="<%=singleData.clinic_id %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="3">Doctor ID</label>
-    <input
-      type="text"
-      class="form-control"
-      id="3"
-      placeholder="Enter Doctor ID"
-      name="doctor_id"
-      value="<%=singleData.doctor_id %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="4">Appointment ID</label>
-    <input
-      type="text"
-      class="form-control"
-      id="4"
-      placeholder="Enter Appointment ID"
-      name="appt_id"
-      value="<%=singleData.appt_id %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="5">Appointment Status</label>
-    <input
-      type="text"
-      class="form-control"
-      id="5"
-      placeholder="Enter Appointment Status"
-      name="appt_status"
-      value="<%=singleData.appt_status %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="6">Time Queued</label>
-    <input
-      type="text"
-      class="form-control"
-      id="6"
-      placeholder="Enter Time Queued"
-      name="time_queued"
-      value="<%=singleData.time_queued %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="7">Queue Date</label>
-    <input
-      type="text"
-      class="form-control"
-      id="7"
-      placeholder="Enter Queue Date"
-      name="queue_date"
-      value="<%=singleData.queue_date %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="8">Start Time</label>
-    <input
-      type="text"
-      class="form-control"
-      id="8"
-      placeholder="Enter Start Time"
-      name="start_time"
-      value="<%=singleData.start_time %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="9">End Time</label>
-    <input
-      type="text"
-      class="form-control"
-      id="9"
-      placeholder="Enter End Time"
-      name="end_time"
-      value="<%=singleData.end_time %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="10">Appointment Type</label>
-    <input
-      type="text"
-      class="form-control"
-      id="10"
-      placeholder="Enter Appointment Type"
-      name="appt_type"
-      value="<%=singleData.appt_type %>"
-    />
-  </div>
-  <div class="form-group">
-    <label for="11">Virtual Status</label>
-    <input
-      type="text"
-      class="form-control"
-      id="11"
-      placeholder="Enter Virtual Status"
-      name="virtual_status"
-      value="<%=singleData.virtual_status %>"
-    />
-  </div>
+    <div class="container-fluid d-flex flex-column flex-wrap justify-content-start" style="margin: 15px 15px">
+      <h1 class="text-center">Edit Appointment</h1>
+      <div class="container w-50 p-2">
+        <form class="row g-3" action="/edit/<%=singleData.px_id %>/update" method="POST">
+          <!-- appt_id -->
+          <div class="col-md-6">
+            <label for="appt_id" class="form-label">Appointment ID</label>
+            <input type="text" class="form-control" id="appt_id" name="appt_id" placeholder="Enter Appointment ID"
+              value="<%=singleData.appt_id %>" />
+          </div>
 
-  <!-- Hidden input field for 'version' -->
-  <input type="hidden" name="version" value="<%=singleData.version %>" />
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+          <!-- clinic_id -->
+          <div class="col-md-6">
+            <label for="clinic_id">Clinic ID</label>
+            <input type="text" class="form-control" id="clinic_id" placeholder="Enter Clinic ID" name="clinic_id"
+              value="<%=singleData.clinic_id %>" />
+          </div>
+
+          <!-- doctor_id -->
+          <div class="col-md-6">
+            <label for="doctor_id">Doctor ID</label>
+            <input type="text" class="form-control" id="doctor_id" placeholder="Enter Doctor ID" name="doctor_id"
+              value="<%=singleData.doctor_id %>" />
+          </div>
+
+          <!-- px_id -->
+          <div class="col-md-6">
+            <label for="px_id">Patient ID</label>
+            <input type="text" class="form-control" id="px_id" placeholder="Enter Patient ID" name="px_id"
+              value="<%=singleData.px_id %>" />
+          </div>
+
+          <!-- time_queued -->
+          <div class="col-md-6">
+            <label for="time_queued">Time Queued</label>
+            <input type="text" class="form-control" id="time_queued" placeholder="Enter Time Queued" name="time_queued"
+              value="<%=singleData.time_queued %>" />
+          </div>
+
+          <!-- queue_date -->
+          <div class="col-md-6">
+            <label for="queue_date">Queue Date</label>
+            <input type="text" class="form-control" id="queue_date" placeholder="Enter Queue Date" name="queue_date"
+              value="<%=singleData.queue_date %>" />
+          </div>
+
+
+
+          <!-- start_time -->
+          <div class="col-md-6">
+            <label for="start_time">Start Time</label>
+            <input type="text" class="form-control" id="start_time" placeholder="Enter Start Time" name="start_time"
+              value="<%=singleData.start_time %>" />
+          </div>
+
+          <!-- end_time -->
+          <div class="col-md-6">
+            <label for="end_time">End Time</label>
+            <input type="text" class="form-control" id="end_time" placeholder="Enter End Time" name="end_time"
+              value="<%=singleData.end_time %>" />
+          </div>
+
+          <!-- appointment_status -->
+          <div class="col-md-4">
+            <label for="appt_status">Appointment Status</label>
+            <input type="text" class="form-control" id="appt_status" placeholder="Enter Appointment Status"
+              name="appt_status" value="<%=singleData.appt_status %>" />
+          </div>
+
+          <!-- appt_type -->
+          <div class="col-md-4">
+            <label for="appt_type">Appointment Type</label>
+            <input type="text" class="form-control" id="appt_type" placeholder="Enter Appointment Type" name="appt_type"
+              value="<%=singleData.appt_type %>" />
+          </div>
+
+          <!-- virtual_status -->
+          <div class="col-md-4">
+            <label for="virtual_status">Virtual Status</label>
+            <input type="text" class="form-control" id="virtual_status" placeholder="Enter Virtual Status"
+              name="virtual_status" value="<%=singleData.virtual_status %>" />
+          </div>
+
+          <!-- Hidden input field for 'version' -->
+            <input type="hidden" name="version" value="<%=singleData.version %>" />
+
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-outline-success w-25">Submit</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
