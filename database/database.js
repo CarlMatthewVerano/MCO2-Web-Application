@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mysql from 'mysql2';
-import LOG from '../utils/logger.js';
+import LOG from '../utils/logger.js'
 dotenv.config()
 
 const app = express();
@@ -60,26 +60,23 @@ export function changePool(port) {
                     
                     currentPortIndex = ports.indexOf(port);
                 })
-                .catch (err => {
-                    if (err.code === 'ETIMEDOUT') {
-                        console.log("Retrying query")
-                        refreshPool();
-                        currentPortIndex -= 1;
-                    }
-                })
+                .catch(err => {
+                    console.error('Error changing pool', err);
+                    reject(err);
+                });
         } catch (err) {
-            console.error('Error changing pool2', err);
+            console.error('Error changing pool', err);
             reject(err);
         }
     });
 }
 
 //CREATE (working)
-export async function creator(px_id, status) {
+export async function creator(appt_id, status) {
     try{
         const [rows] = await pool.query(`
-        INSERT INTO appointments (px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
-        VALUES ("${px_id}", "clinic_val", "doctor_val", "appt_val", "${status}", "time_val", "date_val", "start_val", "end_val", "type_val", "virtual_val", 0)
+        INSERT INTO appointments (appt_id, px_id, clinic_id, doctor_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
+        VALUES ("${appt_id}", "px_id", "clinic_val", "doctor_val", "${status}", "time_val", "date_val", "start_val", "end_val", "type_val", "virtual_val", 0)
         `)
         return rows
     } catch (err) {
@@ -88,7 +85,7 @@ export async function creator(px_id, status) {
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return creator(px_id, status);
+            return creator(appt_id, status);
         } else {
             // Handle other errors as necessary
             throw err;
@@ -103,10 +100,10 @@ export async function read(searchTerm) {
         let params = [];
 
         if (searchTerm) {
-            sql += " WHERE px_id LIKE ?";
+            sql += " WHERE appt_id LIKE ?";
             params.push(searchTerm);
         }
-        sql += " ORDER BY px_id";
+        sql += " ORDER BY appt_id";
         // returns an array of objects
         const [rows] = await pool.query(sql, params)
         return rows;
@@ -125,11 +122,11 @@ export async function read(searchTerm) {
 }
 
 //UPDATE (working)
-export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version) {
+export async function updater(appt_id, px_id, clinic_id, doctor_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version) {
     try{
         // Check if the record exists
         const [existingRows] = await pool.query(`
-        SELECT * FROM appointments WHERE px_id = "${px_id}" AND version = ${version}
+        SELECT * FROM appointments WHERE appt_id = "${appt_id}" AND version = ${version}
         `);
 
         // If the record doesn't exist, return an error or a message
@@ -140,8 +137,8 @@ export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status,
         // If the record exists, update it
         const [rows] = await pool.query(`
         UPDATE appointments
-        SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_id = "${appt_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}", version = version + 1
-        WHERE px_id = "${px_id}" AND version = ${version}
+        SET clinic_id = "${clinic_id}", doctor_id = "${doctor_id}", appt_status = "${appt_status}", time_queued = "${time_queued}", queue_date = "${queue_date}", start_time = "${start_time}", end_time = "${end_time}", appt_type = "${appt_type}", virtual_status = "${virtual_status}", version = version + 1
+        WHERE appt_id = "${appt_id}" AND version = ${version}
         `);
 
         if (rows.affectedRows === 0) {
@@ -155,7 +152,7 @@ export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status,
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version);
+            return updater(appt_id, px_id, clinic_id, doctor_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version);
         } else {
             // Handle other errors as necessary
             throw err;
@@ -164,11 +161,11 @@ export async function updater(px_id, clinic_id, doctor_id, appt_id, appt_status,
 }
 
 //DELETE (working)
-export async function deleter(px_id) {
+export async function deleter(appt_id) {
     try{
         // Check if the record exists
         const [existingRows] = await pool.query(`
-        SELECT * FROM appointments WHERE px_id = "${px_id}"
+        SELECT * FROM appointments WHERE appt_id = "${appt_id}"
         `);
 
         // If the record doesn't exist, return an error or a message
@@ -178,7 +175,7 @@ export async function deleter(px_id) {
 
         // If the record exists, delete it
         await pool.query(`
-        DELETE FROM appointments WHERE px_id = "${px_id}"
+        DELETE FROM appointments WHERE appt_id = "${appt_id}"
         `);
 
         return {message: 'Record deleted', status: 200}
@@ -188,7 +185,7 @@ export async function deleter(px_id) {
             console.log("Retrying query")
             refreshPool();
             // Retry the function
-            return deleter(px_id);
+            return deleter(appt_id);
         } else {
             // Handle other errors as necessary
             throw err;

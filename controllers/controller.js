@@ -26,10 +26,10 @@ api.get('/create', (req, res) => {
     res.render("appointment/create.ejs", { layout: 'layout.ejs' })
 })
 
-api.get('/edit/:px_id', async (req, res) => {
-    const px_id = req.params.px_id
+api.get('/edit/:appt_id', async (req, res) => {
+    const appt_id = req.params.appt_id
     const data = await read();
-    const singleData = await data.find((item) => item.px_id == px_id)
+    const singleData = await data.find((item) => item.appt_id == appt_id)
     
     if (req.query.error) {
         singleData.error = req.query.error;
@@ -50,20 +50,20 @@ api.get('/edit/:px_id', async (req, res) => {
 /* ----------- */
 
 api.post('/create', async (req, res) => {
-    const px_id = req.body.px_id
+    const appt_id = req.body.appt_id
     const appt_status = req.body.appt_status
-    await creator(px_id, appt_status)
+    await creator(appt_id, appt_status)
     res.redirect('/')
 })
 
-api.post('/edit/:px_id/update', async (req, res) => {
+api.post('/edit/:appt_id/update', async (req, res) => {
     
     // handle the optimistic locking error
     try {
-        const px_id = req.params.px_id
+        const appt_id = req.params.appt_id
         const clinic_id = req.body.clinic_id
         const doctor_id = req.body.doctor_id
-        const appt_id = req.body.appt_id
+        const px_id = req.body.px_id
         const appt_status = req.body.appt_status
         const time_queued = req.body.time_queued
         const queue_date = req.body.queue_date
@@ -75,7 +75,7 @@ api.post('/edit/:px_id/update', async (req, res) => {
         console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
 
 
-        const response = await updater(px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
+        const response = await updater(appt_id, px_id, clinic_id, doctor_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
         
         if (response.status === 404) {
             res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});
@@ -88,7 +88,7 @@ api.post('/edit/:px_id/update', async (req, res) => {
         if (err.message === 'Conflict occurred. Please retry the operation.') {
             // Optimistic locking error occurred
             // Redirect the user back to the edit page with an error message
-            res.redirect(`/edit/${px_id}?error=Another user has updated this record. Please review their changes and try again.`);
+            res.redirect(`/edit/${appt_id}?error=Another user has updated this record. Please review their changes and try again.`);
         } else {
             // Some other error occurred
             console.error(err);
@@ -97,10 +97,10 @@ api.post('/edit/:px_id/update', async (req, res) => {
     }
 })
 
-api.post('/edit/:px_id/delete', async (req, res) => {
-    const px_id = req.params.px_id
-    console.log(px_id)
-    const response = await deleter(px_id)
+api.post('/edit/:appt_id/delete', async (req, res) => {
+    const appt_id = req.params.appt_id
+    console.log(appt_id)
+    const response = await deleter(appt_id)
     
     if (response.status === 404) {
         res.render('error.ejs', {status: 404, message: 'Record not found', layout: 'layout.ejs'});

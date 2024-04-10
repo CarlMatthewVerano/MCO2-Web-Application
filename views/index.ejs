@@ -24,7 +24,7 @@
 </script>
 
 <div
-  class="container-fluid d-flex flex-column justify-content-center border border-primary"
+  class="container-fluid d-flex flex-column justify-content-center"
   style="margin: 15px 15px"
 >  
 
@@ -32,7 +32,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Patient ID</th>
+          <th scope="col">Appointment ID</th>
           <th scope="col">Appointment Status</th>
         </tr>
       </thead>
@@ -40,7 +40,7 @@
         <% for(let i = 0; i < data.length; i++) {%>
         <tr>
           <td class="align-middle">
-            <span> <%= data[i].px_id%> </span>
+            <span> <%= data[i].appt_id%> </span>
           </td>
 
           <td class="align-middle">
@@ -48,12 +48,12 @@
               <div class="flex-grow-1"><%= data[i].appt_status%></div>
 
               <!-- <td class="text-center"> -->
-              <a class="link-dark" href="/edit/<%= data[i].px_id %>"
+              <a class="link-dark" href="/edit/<%= data[i].appt_id %>"
                 ><i class="fas fa-edit"></i
               ></a>
               <!-- </td> -->
-              <form action="/edit/<%=data[i].px_id %>/delete" method="POST">
-                <input type="hidden" name="px_id" value="<%=data[i].px_id %>" />
+              <form action="/edit/<%=data[i].appt_id %>/delete" method="POST">
+                <input type="hidden" name="appt_id" value="<%=data[i].appt_id %>" />
                 <!-- <td class="text-center"> -->
                 <button class="fas fa-trash btn mr-1" type="submit"></button>
                 <!-- </td> -->
