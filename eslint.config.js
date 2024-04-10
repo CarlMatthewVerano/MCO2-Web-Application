@@ -10,8 +10,12 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const compat = new FlatCompat({ baseDirectory: __dirname, recommendedConfig: pluginJs.configs.recommended })
 
-export default [
-  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+export default [ 
+  { 
+    files: ['**/*.js'], 
+    languageOptions: { sourceType: 'module' },
+     
+  },
   { languageOptions: { globals: globals.browser } },
   ...compat.extends('standard')
 ]
