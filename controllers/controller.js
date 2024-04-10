@@ -19,9 +19,9 @@ api.get('/', async (req, res) => {
     const totalItems = response.total;
     const totalPages = Math.ceil(totalItems / limit);
 
-    console.log('totalItems: ' + totalItems)
-    console.log('totalPages: ' + totalPages)
-    console.log('currentPage: ' + page)
+    // console.log('totalItems: ' + totalItems)
+    // console.log('totalPages: ' + totalPages)
+    // console.log('currentPage: ' + page)
     
     res.render("index", { data: response.rows, layout: 'layout.ejs', totalPages, currentPage: page, searchTerm})
 })
@@ -78,7 +78,7 @@ api.post('/edit/:appt_id/update', async (req, res) => {
         const appt_type = req.body.appt_type
         const virtual_status = req.body.virtual_status
         const version = req.body.version
-        console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
+        // console.log("WAASADA", px_id, clinic_id, doctor_id, appt_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status)
 
 
         const response = await updater(appt_id, px_id, clinic_id, doctor_id, appt_status, time_queued, queue_date, start_time, end_time, appt_type, virtual_status, version)
