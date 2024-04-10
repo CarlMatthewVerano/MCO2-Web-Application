@@ -11,14 +11,19 @@ get routes
 // Manage top-level request first
 api.get('/', async (req, res) => {
     const searchTerm = req.query.searchTerm;
-    const data = await read(searchTerm);
-    res.render("index", { data, layout: 'layout.ejs' })
-})
+    const page = parseInt(req.query.page, 10) || 1; // default to page 1 if not provided
+    const limit = parseInt(req.query.limit, 10) || 20; // default to 20 items per page if not provided
 
-api.get('/index', async (req, res) => {
-    const searchTerm = req.query.searchTerm;
-    const data = await read(searchTerm);
-    res.render("index", { data, layout: 'layout.ejs' })
+    const response = await read(searchTerm, limit, page);
+
+    const totalItems = response.total;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    console.log('totalItems: ' + totalItems)
+    console.log('totalPages: ' + totalPages)
+    console.log('currentPage: ' + page)
+    
+    res.render("index", { data: response.rows, layout: 'layout.ejs', totalPages, currentPage: page, searchTerm})
 })
 
 // Create route

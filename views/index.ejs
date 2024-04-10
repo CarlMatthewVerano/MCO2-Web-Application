@@ -23,13 +23,11 @@
   }
 </script>
 
-<div
-  class="container-fluid d-flex flex-column justify-content-center"
-  style="margin: 15px 15px"
->  
+<div class="container-fluid d-flex flex-column justify-content-center" style="margin: 15px 15px">
 
+  <% if (data) { %>
   <div class="container">
-    <table class="table table-striped">
+    <table class="table table-striped table-fixed">
       <thead>
         <tr>
           <th scope="col">Appointment ID</th>
@@ -37,32 +35,73 @@
         </tr>
       </thead>
       <tbody>
-        <% for(let i = 0; i < data.length; i++) {%>
-        <tr>
-          <td class="align-middle">
-            <span> <%= data[i].appt_id%> </span>
-          </td>
+        <% for(let i=0; i < data.length; i++) {%>
+          <tr>
+            <td class="align-middle">
+              <span>
+                <%= data[i].appt_id%>
+              </span>
+            </td>
 
-          <td class="align-middle">
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1"><%= data[i].appt_status%></div>
+            <td class="align-middle">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <%= data[i].appt_status%>
+                </div>
 
-              <!-- <td class="text-center"> -->
-              <a class="link-dark" href="/edit/<%= data[i].appt_id %>"
-                ><i class="fas fa-edit"></i
-              ></a>
-              <!-- </td> -->
-              <form action="/edit/<%=data[i].appt_id %>/delete" method="POST">
-                <input type="hidden" name="appt_id" value="<%=data[i].appt_id %>" />
                 <!-- <td class="text-center"> -->
-                <button class="fas fa-trash btn mr-1" type="submit"></button>
+                <a class="link-dark" href="/edit/<%= data[i].appt_id %>"><i class="fas fa-edit"></i></a>
                 <!-- </td> -->
-              </form>
-            </div>
-          </td>
-        </tr>
-        <% } %>
+                <form action="/edit/<%=data[i].appt_id %>/delete" method="POST">
+                  <input type="hidden" name="appt_id" value="<%=data[i].appt_id %>" />
+                  <!-- <td class="text-center"> -->
+                  <button class="fas fa-trash btn mr-1" type="submit"></button>
+                  <!-- </td> -->
+                </form>
+              </div>
+            </td>
+          </tr>
+          <% } %>
       </tbody>
     </table>
+
+    <div class="d-flex justify-content-center">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <% if(currentPage !==1) { %>
+            <li class="page-item">
+              <a class="page-link" href="?page=1&searchTerm=<%=searchTerm%>">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page=<%= currentPage - 1 %>&searchTerm=<%=searchTerm%>">Previous</a>
+            </li>
+            <% } %>
+              <% let startPage=Math.max(1, currentPage - 2); %>
+                <% let endPage=Math.min(totalPages, startPage + 4); %>
+                  <% for(let i=startPage; i <=endPage; i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>&searchTerm=<%=searchTerm%>">
+                        <%= i %>
+                      </a>
+                    </li>
+                    <% } %>
+                      <% if(currentPage !==totalPages) { %>
+                        <li class="page-item">
+                          <a class="page-link" href="?page=<%= currentPage + 1 %>&searchTerm=<%=searchTerm%>">Next</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="?page=<%= totalPages %>&searchTerm=<%=searchTerm%>"><%=totalPages %></a>
+                        </li>
+                        <% } %>
+        </ul>
+      </nav>
+    </div>
   </div>
+  <% } else { %>
+    <div class="d-flex justify-content-center">
+      <h1>No Appointments</h1>
+    </div>
+    <% } %>
+
+
 </div>
